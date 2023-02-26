@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default"
+    data-assets-path="{{ url_for('static', filename='/assets/') }}" data-template="vertical-menu-template-free">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+    <title>GP Portal - SPU</title>
+
+    <meta name="description" content="" />
+
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='/assets/img/favicon/logo.png') }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='/assets/vendor/fonts/boxicons.css') }}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='/assets/vendor/css/core.css') }}"
+        class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='/assets/vendor/css/theme-default.css') }}"
+        class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='/assets/css/demo.css') }}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='/assets/vendor/libs/apex-charts/apex-charts.css') }}" />
+
+    <!-- Page CSS -->
+
+    <!-- Helpers -->
+    <script src="{{ url_for('static', filename='/assets/vendor/js/helpers.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="{{ url_for('static', filename='/assets/js/config.js') }}"></script>
+
+</head>
+
+<body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+            <!-- Menu -->
+
+            <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+                <div class="app-brand demo">
+                    <span class="app-brand-logo demo">
+                      <img src="{{ url_for('static', filename='/assets/img/favicon/logo.png') }}" alt="" style="width: 50px;">
+                    </span>
+                    <span class="app-brand-text demo menu-text fw-bolder ms-2"><b>GP Portal</b> </span>
+        
+                  <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+                    <i class="bx bx-chevron-left bx-sm align-middle"></i>
+                  </a>
+                </div>
+        
+                <div class="menu-inner-shadow"></div>
+        
+                <ul class="menu-inner py-1">
+                  {% if current_user.role!='Gate-Keeper'%}
+                  <li class="menu-item">
+                    <a href="{{url_for('main.dashboard')}}" class="menu-link">
+                      <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                      <div data-i18n="Analytics">Dashboard</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href="{{url_for('main.qrGen')}}" class="menu-link">
+                      <i class="menu-icon tf-icons bx bx-id-card"></i>
+                      <div data-i18n="Analytics">Generate Gate Pass</div>
+                    </a>
+                  </li>
+                  <li class="menu-item active">
+                    <a href="{{url_for('auth.addStudent')}}" class="menu-link">
+                      <i class="menu-icon tf-icons bx bx-user"></i>
+                      <div data-i18n="Analytics">Add Student</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href="{{url_for('main.Info')}}" class="menu-link">
+                      <i class="menu-icon tf-icons bx bx-info-circle"></i>
+                      <div data-i18n="Analytics">Info</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href="{{url_for('main.scan')}}" class="menu-link">
+                      <i class="menu-icon tf-icons bx bx-scan"></i>
+                      <div data-i18n="Analytics">Scanner</div>
+                    </a>
+                  </li>
+                  {% else %}
+                  <li class="menu-item">
+                    <a href="{{url_for('main.scan')}}" class="menu-link">
+                      <i class="menu-icon tf-icons bx bx-search"></i>
+                      <div data-i18n="Analytics">Scanner</div>
+                    </a>
+                  </li>
+                  {% endif %}
+                </ul>
+              </aside>
+            <!-- / Menu -->
+
+            <!-- Layout container -->
+            <div class="layout-page">
+                <!-- Navbar -->
+
+                <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+                    id="layout-navbar">
+                    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                            <i class="bx bx-menu bx-sm"></i>
+                        </a>
+                    </div>
+
+                    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+                        <!-- Search -->
+                        <div class="navbar-nav align-items-center">
+                            <div class="nav-item d-flex align-items-center">
+                                <h4 class="fw-semibold d-block mb-1" style="padding: 1rem;">Add Student</h4>
+                            </div>
+                        </div>
+                        <!-- /Search -->
+
+                        <ul class="navbar-nav flex-row align-items-center ms-auto">
+                            <!-- User -->
+                            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
+                                    data-bs-toggle="dropdown">
+                                    <div class="avatar avatar-online">
+                                        <img src="{{ url_for('static', filename='/assets/img/avatars/1.png') }}" alt
+                                            class="w-px-40 h-auto rounded-circle" />
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" href="{{url_for('auth.Profile')}}">
+                                            <div class="d-flex">
+                                                <div class="flex-shrink-0 me-3">
+                                                    <div class="avatar avatar-online">
+                                                        <img src="{{ url_for('static', filename='/assets/img/avatars/1.png') }}"
+                                                            alt class="w-px-40 h-auto rounded-circle" />
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <span class="fw-semibold d-block">{{current_user.name}}</span>
+                                                    <small class="text-muted">{{current_user.role}}</small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <!-- <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="bx bx-user me-2"></i>
+                                            <span class="align-middle">My Profile</span>
+                                        </a>
+                                    </li> -->
+                                    <li>
+                                        <a class="dropdown-item" href="{{url_for('auth.addUser')}}">
+                                            <i class="bx bx-user me-2"></i>
+                                            <span class="align-middle">Add User</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{url_for('auth.logout')}}">
+                                            <i class="bx bx-power-off me-2"></i>
+                                            <span class="align-middle">Log Out</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!--/ User -->
+                        </ul>
+                    </div>
+                </nav>
+
+                <!-- / Navbar -->
+
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+                    <!-- Content -->
+
+                    <div class="container-xxl flex-grow-1 container-p-y ">
+                        <div class="row justify-content-center align-items">
+                            <div class="col-lg-8 mb-4 order-0">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <form method="POST" action="/addStudent">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="modalCenterTitle3">Add Student</h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="text-center">
+                                                    {% with messages = get_flashed_messages() %}
+                                                    {% if messages %}
+                                                    <div class="alert alert-warning" role="alert">
+                                                        {{ messages[0] }}
+                                                    </div>
+                                                    {% endif %}
+                                                    {% endwith %}
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col mb-3">
+                                                        <label for="nameWithTitle" class="form-label">Name</label>
+                                                        <input type="text" name="name" id="nameWithTitle"
+                                                            class="form-control" placeholder="Enter Name" required />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col mb-3">
+                                                        <label for="nameWithTitle" class="form-label">Email</label>
+                                                        <input type="text" name="email" id="nameWithTitle"
+                                                            class="form-control" placeholder="xxxx@xxx.xxx" required />
+                                                    </div>
+                                                </div>
+                                                <div class="row g-2">
+                                                    <div class="col mb-0">
+                                                        <label for="prn" class="form-label">PRN</label>
+                                                        <input type="tel" name="prn" pattern="[0-9]{16}" id="prn"
+                                                            class="form-control" placeholder="Enter PRN" required />
+                                                    </div>
+                                                    <div class="col mb-0">
+                                                        <label for="phone" class="form-label">Phone Number</label>
+                                                        <input type="tel" name="number" pattern="[0-9]{10}" id="phone"
+                                                            class="form-control" placeholder="Enter Phone" required />
+                                                    </div>
+                                                </div>
+                                                <!-- Department and Institute in text Input -->
+                                                <!-- <div class="row g-2">
+                                                <div class="col mb-0">
+                                                    <label for="insti" class="form-label">Institute</label>
+                                                    <input type="text" id="institute" class="form-control"
+                                                        placeholder="Enter Institute" required />
+                                                </div>
+                                                <div class="col mb-0">
+                                                    <label for="dept" class="form-label">Department</label>
+                                                    <input type="text" id="dept" class="form-control"
+                                                        placeholder="Enter Department" required />
+                                                </div>
+                                            </div> -->
+                                                <div class="row">
+                                                    <div class="col mb-3">
+                                                        <label class="form-label" for=""></label>
+                                                        <select  class="form-control" name="insti" id="insti">
+                                                            <option selected = "selected" >Select Institute</option>
+                                                            <option value="SPCE">Sankalchand Patel College of Engineering</option>
+                                                            <option value="NMCRC">Nootan Meedical College and Research Center</option>
+                                                            </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col mb-3">
+                                                        <select class="form-control" name="dept" id="dept">
+                                                            <option selected = "selected" >Select Department</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col mb-3 justify-content-center">
+                                                        <button class="btn btn-outline-primary mt-4 " type="submit">Add
+                                                            Student</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Footer -->
+
+
+                            <div class="content-backdrop fade"></div>
+                        </div>
+                        <!-- Content wrapper -->
+                    </div>
+                    <footer class="content-footer footer bg-footer-theme">
+                        <div
+                            class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                            <div class="mb-2 mb-md-0">
+                                ©
+                                <script>
+                                    document.write(new Date().getFullYear());
+                                </script>
+                                , Made with ❤️ by
+                                <a href="https://github.com/hyphen04" target="_blank" class="footer-link fw-bolder">Kunj
+                                    Patel</a> and
+                                <a href="https://github.com/VedantPy" target="_blank"
+                                    class="footer-link fw-bolder">Vedant Pandey</a>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- / Footer -->
+                </div>
+            </div>
+            <!-- / Layout page -->
+        </div>
+
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="{{ url_for('static', filename='/assets/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='/assets/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ url_for('static', filename='/assets/vendor/js/bootstrap.js') }}"></script>
+    <script
+        src="{{ url_for('static', filename='/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='/assets/vendor/js/menu.js') }}"></script>
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+    <script src="{{ url_for('static', filename='/assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
+
+    <!-- Main JS -->
+    <script src="{{ url_for('static', filename='/assets/js/main.js') }}"></script>
+
+    <!-- Page JS -->
+    <script src="{{ url_for('static', filename='/assets/js/dashboards-analytics.js') }}"></script>
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script type="text/javascript">
+
+        var spce = ["Computer Engineering", "Information Technology"];
+        var nmcrc = ["MBBS 1", "MBBS 2"];
+
+
+        document.getElementById("insti").addEventListener("change", function (e) {
+            var select2 = document.getElementById("dept");
+            select2.innerHTML = "";
+            var aItems = [];
+            if (this.value == "NMCRC") {
+                aItems = nmcrc;
+            } else if (this.value == "SPCE") {
+                aItems = spce;
+            }
+            for (var i = 0, len = aItems.length; i < len; i++) {
+                var option = document.createElement("option");
+                option.value = aItems[i];
+                var textNode = document.createTextNode(aItems[i]);
+                option.appendChild(textNode);
+                select2.appendChild(option);
+            }
+
+        }, false);
+    </script>
+
+</body>
+
+</html>
